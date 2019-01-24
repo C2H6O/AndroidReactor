@@ -21,6 +21,7 @@ dependencies {
     implementation 'at.florianschuster:androidreactor:0.0.1'
 }
 ```
+(Package is still in review on jcenter)
 
 
 ## What should I know before I try this?
