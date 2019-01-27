@@ -112,6 +112,7 @@ class ReactorTest {
         val reactor = StopwatchReactor()
         val testObserver = reactor.state.test()
         //todo https://github.com/ReactorKit/ReactorKit/blob/master/Tests/ReactorKitTests/ReactorTests.swift#L134
+
     }
 }
 
@@ -183,11 +184,7 @@ private class StopwatchReactor : BaseTestReactor<StopwatchReactor.Action, Int, I
     override fun mutate(action: Action): Observable<out Int> = when (action) {
         is Action.Start -> {
             Observable.interval(1, TimeUnit.SECONDS)
-                .takeUntil(this.action.filter {
-                    val lel = it is Action.Stop
-                    println("lel: $lel")
-                    lel
-                })
+                .takeUntil(this.action.filter { it is Action.Stop })
                 .map { 1 }
         }
         is Action.Stop -> Observable.empty()

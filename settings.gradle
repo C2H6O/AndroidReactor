@@ -1,1 +1,1 @@
-include ':library', ':countersample', ':githubsample'
+include ':androidreactor', ':countersample', ':githubsample', ':savestatesample'

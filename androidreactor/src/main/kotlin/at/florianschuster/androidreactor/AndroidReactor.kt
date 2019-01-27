@@ -3,6 +3,9 @@ package at.florianschuster.androidreactor
 
 typealias ErrorHandler = (Throwable) -> Unit
 
+/**
+ * Object to handle Library initializations.
+ */
 object AndroidReactor {
     private var errorHandler: ErrorHandler? = null
 

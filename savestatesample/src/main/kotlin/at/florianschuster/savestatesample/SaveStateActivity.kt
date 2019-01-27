@@ -1,4 +1,4 @@
-package at.florianschuster.countersample
+package at.florianschuster.savestatesample
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -9,35 +9,38 @@ import com.jakewharton.rxbinding3.view.clicks
 import com.jakewharton.rxbinding3.view.visibility
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.activity_counter.*
+import kotlinx.android.synthetic.main.activity_saved_state.*
 import java.util.concurrent.TimeUnit
 
 
-private const val layout = R.layout.activity_counter
+const val layout = R.layout.activity_saved_state
+const val counterValueKey = "SaveStateActivity.counter"
 
-class CounterActivity : AppCompatActivity(), ReactorView<CounterReactor> {
-    override val reactor: CounterReactor by viewModelReactor()
+class SaveStateActivity : AppCompatActivity(), ReactorView<SaveStateReactor> {
+    private var counterValue: Int = 0
+    override val reactor by viewModelReactor { SaveStateReactor(counterValue) }
     override val disposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layout)
+        counterValue = savedInstanceState?.getInt(counterValueKey) ?: 0
         bind(reactor)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        disposables.clear()
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(counterValueKey, reactor.currentState.value)
     }
 
-    override fun bind(reactor: CounterReactor) {
+    override fun bind(reactor: SaveStateReactor) {
         btnIncrease.clicks()
-            .map { CounterReactor.Action.Increase }
+            .map { SaveStateReactor.Action.Increase }
             .subscribe(reactor.action)
             .let(disposables::add)
 
         btnDecrease.clicks()
-            .map { CounterReactor.Action.Decrease }
+            .map { SaveStateReactor.Action.Decrease }
             .subscribe(reactor.action)
             .let(disposables::add)
 
@@ -54,10 +57,9 @@ class CounterActivity : AppCompatActivity(), ReactorView<CounterReactor> {
     }
 }
 
-
-class CounterReactor(
-    initialState: State = State()
-) : ViewModelReactor<CounterReactor.Action, CounterReactor.Mutation, CounterReactor.State>(initialState) {
+class SaveStateReactor(
+    initialValue: Int
+) : ViewModelReactor<SaveStateReactor.Action, SaveStateReactor.Mutation, SaveStateReactor.State>(State(initialValue)) {
     sealed class Action {
         object Increase : Action()
         object Decrease : Action()
@@ -70,7 +72,7 @@ class CounterReactor(
     }
 
     data class State(
-        val value: Int = 0,
+        val value: Int,
         val loading: Boolean = false
     )
 

@@ -11,7 +11,18 @@ import io.reactivex.disposables.CompositeDisposable
  * Reference: https://github.com/ReactorKit/ReactorKit
  */
 interface ReactorView<R : Reactor<*, *, *>> {
+    /**
+     * The CompositeDisposable that contains all view subscriptions.
+     */
     val disposables: CompositeDisposable
+
+    /**
+     * The Reactor that binds to the View.
+     */
     val reactor: R
+
+    /**
+     * Binds a Reactor to a View.
+     */
     fun bind(reactor: R)
 }

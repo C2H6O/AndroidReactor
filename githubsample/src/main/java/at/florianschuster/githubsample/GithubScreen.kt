@@ -9,10 +9,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import at.florianschuster.androidreactor.ReactorView
-import at.florianschuster.androidreactor.ViewModelReactor
-import at.florianschuster.androidreactor.reactor
+import at.florianschuster.androidreactor.*
 import com.jakewharton.rxbinding3.recyclerview.scrollEvents
+import com.jakewharton.rxbinding3.view.visibility
 import com.jakewharton.rxbinding3.widget.textChanges
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -24,7 +23,7 @@ import java.util.concurrent.TimeUnit
 private const val layout = R.layout.fragment_github
 
 class GithubFragment : Fragment(), ReactorView<GithubReactor> {
-    override val reactor: GithubReactor by reactor()
+    override val reactor: GithubReactor by viewModelReactor()
     override val disposables = CompositeDisposable()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
@@ -65,6 +64,10 @@ class GithubFragment : Fragment(), ReactorView<GithubReactor> {
             .subscribe(adapter::submitList)
             .let(disposables::add)
 
+        reactor.state.map { it.loadingNextPage }
+            .subscribe(progressLoading.visibility())
+            .let(disposables::add)
+
         //view
 
         adapter.onClick.map { it.url }
@@ -82,7 +85,9 @@ class GithubFragment : Fragment(), ReactorView<GithubReactor> {
     }
 }
 
-class GithubReactor : ViewModelReactor<GithubReactor.Action, GithubReactor.Mutation, GithubReactor.State>(State()) {
+class GithubReactor(
+    initialState: State = State()
+) : ViewModelReactor<GithubReactor.Action, GithubReactor.Mutation, GithubReactor.State>(initialState) {
     private val api = GithubApi.create()
 
     sealed class Action {
@@ -108,9 +113,11 @@ class GithubReactor : ViewModelReactor<GithubReactor.Action, GithubReactor.Mutat
         is Action.UpdateQuery -> {
             Observable.concat(
                 Observable.just(Mutation.SetQuery(action.query)),
+                Observable.just(Mutation.SetLoadingNextPage(true)),
                 search(action.query, 1)
                     .takeUntil(this.action.filter { it is Action.UpdateQuery })
-                    .map { Mutation.SetRepos(it.first, it.second) }
+                    .map { Mutation.SetRepos(it.first, it.second) },
+                Observable.just(Mutation.SetLoadingNextPage(false))
             )
         }
         is Action.LoadNextPage -> {

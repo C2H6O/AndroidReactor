@@ -15,6 +15,9 @@ import io.reactivex.disposables.CompositeDisposable
  * Reference: https://github.com/ReactorKit/ReactorKit
  */
 interface Reactor<Action, Mutation, State> where Action : Any, Mutation : Any, State : Any {
+    /**
+     * The CompositeDisposable that contains the State Stream disposable.
+     */
     val disposables: CompositeDisposable
 
     /**

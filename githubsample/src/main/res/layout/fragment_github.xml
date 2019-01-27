@@ -6,18 +6,39 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="Search Github Repos"
+            android:textSize="20sp"
+            android:textColor="#000"
+            android:layout_margin="16dp"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/progressLoading"
+            tools:ignore="HardcodedText"/>
+
+    <ProgressBar
+            android:id="@+id/progressLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
     <EditText
             android:id="@+id/searchView"
             android:layout_margin="12dp"
-            android:hint="Search Github Repos"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            app:layout_constraintStart_toStartOf="parent"
             android:lines="1"
             android:maxLines="1"
             android:drawableLeft="@drawable/ic_search"
             android:drawableStart="@drawable/ic_search"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_height="wrap_content"
-            tools:ignore="HardcodedText"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            android:layout_height="wrap_content"/>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvRepos"
