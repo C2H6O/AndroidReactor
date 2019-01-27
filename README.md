@@ -61,7 +61,7 @@ The `ViewModelReactor` is a default implementation for a `Reactor` that uses the
 * [Counter](https://github.com/floschu/AndroidReactor/tree/master/countersample): Most Basic Counter Example. It uses `ViewModelReactor` for an Activity.
 * [Github Search](https://github.com/floschu/AndroidReactor/tree/master/githubsample): Github Repository Search. It uses `ViewModelReactor` for a Fragment.
 * [Save State Example](https://github.com/floschu/AndroidReactor/tree/master/savestatesample): Like the Counter. Basic but it uses `onSaveInstanceState` to preserve the `Reactor`'s state on process death.
-* [Watchables](https://github.com/floschu/Watchables): A Movie and TV Show Watchlist Application. It uses [Koin](https://github.com/InsertKoinIO/koin) as DI Framework to inject dependencies into a `Reactor.
+* [Watchables](https://github.com/floschu/Watchables): A Movie and TV Show Watchlist Application. It uses [Koin](https://github.com/InsertKoinIO/koin) as DI Framework to inject dependencies into a `Reactor`.
 
 
 ## Author
