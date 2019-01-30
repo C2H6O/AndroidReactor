@@ -3,7 +3,6 @@ package at.florianschuster.androidreactor
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import org.amshove.kluent.shouldEqual
 import org.junit.Rule
 import org.junit.Test
