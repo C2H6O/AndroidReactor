@@ -9,7 +9,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.Consumer
 
 /**
  * Abstract Reactor implementing ViewModel.
@@ -17,7 +16,7 @@ import io.reactivex.functions.Consumer
  */
 abstract class ViewModelReactor<Action : Any, Mutation : Any, State : Any>(
     final override val initialState: State
-) : ViewModel(), Reactor<Action, Mutation, State>, Consumer<Action> {
+) : ViewModel(), Reactor<Action, Mutation, State> {
     override val disposables = CompositeDisposable()
 
     private val internalAction: PublishRelay<Action> by lazy { PublishRelay.create<Action>() }
