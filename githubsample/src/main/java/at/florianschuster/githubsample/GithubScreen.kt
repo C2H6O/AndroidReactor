@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import at.florianschuster.androidreactor.*
+import at.florianschuster.androidreactor.ReactorView
+import at.florianschuster.androidreactor.ViewModelReactor
+import at.florianschuster.androidreactor.viewModelReactor
 import com.jakewharton.rxbinding3.recyclerview.scrollEvents
 import com.jakewharton.rxbinding3.view.visibility
 import com.jakewharton.rxbinding3.widget.textChanges
@@ -18,7 +20,6 @@ import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_github.*
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
-
 
 private const val layout = R.layout.fragment_github
 
@@ -48,14 +49,14 @@ class GithubFragment : Fragment(), ReactorView<GithubReactor> {
             .skipInitialValue()
             .debounce(300, TimeUnit.MILLISECONDS)
             .map { GithubReactor.Action.UpdateQuery(it.toString()) }
-            .subscribe(reactor.action)
+            .subscribe(reactor)
             .let(disposables::add)
 
         rvRepos.scrollEvents()
             .sample(500, TimeUnit.MILLISECONDS)
             .filter { it.view.shouldLoadMore() }
             .map { GithubReactor.Action.LoadNextPage }
-            .subscribe(reactor.action)
+            .subscribe(reactor)
             .let(disposables::add)
 
         //state

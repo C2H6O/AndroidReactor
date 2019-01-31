@@ -33,12 +33,12 @@ class CounterActivity : AppCompatActivity(), ReactorView<CounterReactor> {
     override fun bind(reactor: CounterReactor) {
         btnIncrease.clicks()
             .map { CounterReactor.Action.Increase }
-            .subscribe(reactor.action)
+            .subscribe(reactor)
             .let(disposables::add)
 
         btnDecrease.clicks()
             .map { CounterReactor.Action.Decrease }
-            .subscribe(reactor.action)
+            .subscribe(reactor)
             .let(disposables::add)
 
         reactor.state.map { it.value }

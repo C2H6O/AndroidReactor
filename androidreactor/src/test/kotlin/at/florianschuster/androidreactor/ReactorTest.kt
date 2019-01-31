@@ -18,7 +18,7 @@ class ReactorTest {
         val reactor = TestReactor()
         val testObserver = reactor.state.test()
 
-        reactor.action.accept(arrayListOf("action"))
+        reactor.accept(arrayListOf("action"))
 
         testObserver.let {
             it.assertNoErrors()
@@ -41,8 +41,8 @@ class ReactorTest {
         val reactor = CounterReactor()
         val testObserver = reactor.state.test() // state: 0
 
-        reactor.action.accept(Unit) // state: 1
-        reactor.action.accept(Unit) // state: 2
+        reactor.accept(Unit) // state: 1
+        reactor.accept(Unit) // state: 2
 
         testObserver.values().let {
             it.count() shouldEqual 3
@@ -54,7 +54,7 @@ class ReactorTest {
     fun testCurrentState() {
         val reactor = TestReactor()
         val ignore = reactor.state
-        reactor.action.accept(listOf("action"))
+        reactor.accept(listOf("action"))
 
         reactor.currentState shouldEqual listOf(
             "action",
@@ -68,7 +68,7 @@ class ReactorTest {
     @Test
     fun testAutomatedStateCreation() {
         val reactor = TestReactor()
-        reactor.action.accept(listOf("action"))
+        reactor.accept(listOf("action"))
 
         reactor.currentState shouldEqual listOf(
             "action",
@@ -85,11 +85,11 @@ class ReactorTest {
         val testObserver = reactor.state.test()
 
         reactor.stateForTriggerError = 2
-        reactor.action.accept(Unit)
-        reactor.action.accept(Unit)
-        reactor.action.accept(Unit)
-        reactor.action.accept(Unit)
-        reactor.action.accept(Unit)
+        reactor.accept(Unit)
+        reactor.accept(Unit)
+        reactor.accept(Unit)
+        reactor.accept(Unit)
+        reactor.accept(Unit)
 
         testObserver.values().let {
             it.size shouldEqual 6
@@ -103,11 +103,11 @@ class ReactorTest {
         val testObserver = reactor.state.test()
 
         reactor.stateForTriggerCompleted = 2
-        reactor.action.accept(Unit)
-        reactor.action.accept(Unit)
-        reactor.action.accept(Unit)
-        reactor.action.accept(Unit)
-        reactor.action.accept(Unit)
+        reactor.accept(Unit)
+        reactor.accept(Unit)
+        reactor.accept(Unit)
+        reactor.accept(Unit)
+        reactor.accept(Unit)
 
         testObserver.values() shouldEqual listOf(0, 1, 2, 3, 4, 5)
     }

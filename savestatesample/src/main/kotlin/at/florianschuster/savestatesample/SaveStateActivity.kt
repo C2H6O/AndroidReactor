@@ -36,12 +36,12 @@ class SaveStateActivity : AppCompatActivity(), ReactorView<SaveStateReactor> {
     override fun bind(reactor: SaveStateReactor) {
         btnIncrease.clicks()
             .map { SaveStateReactor.Action.Increase }
-            .subscribe(reactor.action)
+            .subscribe(reactor)
             .let(disposables::add)
 
         btnDecrease.clicks()
             .map { SaveStateReactor.Action.Decrease }
-            .subscribe(reactor.action)
+            .subscribe(reactor)
             .let(disposables::add)
 
         reactor.state.map { it.value }
