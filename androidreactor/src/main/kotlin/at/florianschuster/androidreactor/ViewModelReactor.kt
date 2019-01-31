@@ -27,16 +27,16 @@ abstract class ViewModelReactor<Action : Any, Mutation : Any, State : Any>(
         createStateStream().also {
             pendingActions.forEach { internalAction.accept(it) }
             pendingActions.clear()
+            isStateInitialized = true
         }
     }
 
     private val pendingActions: MutableList<Action> = mutableListOf()
 
-    private val isInitialized: Boolean
-        get() = disposables.size() > 0
+    private var isStateInitialized: Boolean = false
 
     override fun accept(t: Action) {
-        if (!isInitialized) {
+        if (!isStateInitialized) {
             pendingActions.add(t)
         } else {
             internalAction.accept(t)
