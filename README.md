@@ -1,6 +1,6 @@
 # AndroidReactor
 
-![AndroidReactor Version](https://img.shields.io/badge/AndroidReactor-0.0.2-red.svg) ![minSdk](https://img.shields.io/badge/minSdk-14-green.svg)
+![AndroidReactor Version](https://img.shields.io/badge/AndroidReactor-0.0.3-red.svg) ![minSdk](https://img.shields.io/badge/minSdk-14-green.svg)
 
 AndroidReactor is a framework for a reactive and unidirectional Android application architecture.  
 It is an Android port of the [ReaktorKit](https://github.com/ReactorKit/ReactorKit/) iOS concept.
@@ -18,7 +18,7 @@ allprojects {
 ...
 
 dependencies {
-    implementation 'at.florianschuster:androidreactor:0.0.2'
+    implementation 'at.florianschuster:androidreactor:0.0.3'
 }
 ```
 
