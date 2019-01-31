@@ -1,10 +1,9 @@
 package at.florianschuster.androidreactor
 
-import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-
+import io.reactivex.functions.Consumer
 
 /**
  * A Reactor is an UI-independent layer which manages the state of a view. The foremost role of a
@@ -14,7 +13,7 @@ import io.reactivex.disposables.CompositeDisposable
  *
  * Reference: https://github.com/ReactorKit/ReactorKit
  */
-interface Reactor<Action, Mutation, State> where Action : Any, Mutation : Any, State : Any {
+interface Reactor<Action, Mutation, State> : Consumer<Action> where Action : Any, Mutation : Any, State : Any {
     /**
      * The CompositeDisposable that contains the State Stream disposable.
      */
@@ -23,7 +22,7 @@ interface Reactor<Action, Mutation, State> where Action : Any, Mutation : Any, S
     /**
      * The action from the view. Bind user inputs to this subject.
      */
-    val action: PublishRelay<Action>
+    val action: Observable<Action>
 
     /**
      * The state stream. Use this observable to observe the state changes.
