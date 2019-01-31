@@ -93,6 +93,7 @@ interface Reactor<Action, Mutation, State> where Action : Any, Mutation : Any, S
             .observeOn(AndroidSchedulers.mainThread())
 
         val transformedState = transformState(state)
+            .distinctUntilChanged()
             .doOnNext { currentState = it }
             .replay(1)
 
