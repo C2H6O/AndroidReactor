@@ -87,13 +87,13 @@ interface Reactor<Action, Mutation, State> where Action : Any, Mutation : Any, S
 
         val state: Observable<State> = transformedMutation
             .scan(initialState) { state, mutate -> reduce(state, mutate) }
+            .distinctUntilChanged()
             .doOnError(AndroidReactor::log)
             .onErrorResumeNext { _: Throwable -> Observable.empty() }
             .startWith(initialState)
             .observeOn(AndroidSchedulers.mainThread())
 
         val transformedState = transformState(state)
-            .distinctUntilChanged()
             .doOnNext { currentState = it }
             .replay(1)
 
