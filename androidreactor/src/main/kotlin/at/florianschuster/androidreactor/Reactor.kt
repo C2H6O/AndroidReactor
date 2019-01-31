@@ -74,7 +74,7 @@ interface Reactor<Action, Mutation, State> where Action : Any, Mutation : Any, S
     /**
      * Creates the State stream by transforming the action relay to a state observable.
      */
-    fun createStateStream(): Observable<State> {
+    fun createStateStream(): Observable<out State> {
         val transformedAction: Observable<out Action> = transformAction(action)
 
         val mutation: Observable<Mutation> = transformedAction.flatMap {

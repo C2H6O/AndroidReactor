@@ -53,8 +53,7 @@ class ReactorTest {
     @Test
     fun testCurrentState() {
         val reactor = TestReactor()
-        reactor.state //create state stream
-
+        val ignore = reactor.state
         reactor.action.accept(listOf("action"))
 
         reactor.currentState shouldEqual listOf(
@@ -67,10 +66,17 @@ class ReactorTest {
     }
 
     @Test
-    fun testCurrentStateNotCreated() {
+    fun testAutomatedStateCreation() {
         val reactor = TestReactor()
         reactor.action.accept(listOf("action"))
-        reactor.currentState shouldEqual emptyList()
+
+        reactor.currentState shouldEqual listOf(
+            "action",
+            "transformedAction",
+            "mutation",
+            "transformedMutation",
+            "transformedState"
+        )
     }
 
     @Test
@@ -120,8 +126,8 @@ abstract class BaseTestReactor<A : Any, M : Any, S : Any>(
     final override val initialState: S
 ) : Reactor<A, M, S> {
     override var disposables = CompositeDisposable()
-    override val action: PublishRelay<A> by lazy { PublishRelay.create<A>() }
-    override val state: Observable<out S> by lazy { createStateStream() }
+    override val action = PublishRelay.create<A>()
+    override val state = this.createStateStream()
     override var currentState: S = initialState
 }
 

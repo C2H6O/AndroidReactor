@@ -19,10 +19,8 @@ abstract class ViewModelReactor<Action : Any, Mutation : Any, State : Any>(
     final override val initialState: State
 ) : ViewModel(), Reactor<Action, Mutation, State> {
     override val disposables = CompositeDisposable()
-
     override val action: PublishRelay<Action> by lazy { PublishRelay.create<Action>() }
-    override val state: Observable<out State> by lazy { createStateStream() }
-
+    override val state: Observable<out State> = this.createStateStream()
     override var currentState: State = initialState
 
     @CallSuper
