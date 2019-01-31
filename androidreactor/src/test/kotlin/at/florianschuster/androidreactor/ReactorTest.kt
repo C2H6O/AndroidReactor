@@ -129,6 +129,7 @@ abstract class BaseTestReactor<A : Any, M : Any, S : Any>(
     override val action = PublishRelay.create<A>()
     override val state = this.createStateStream()
     override var currentState: S = initialState
+    override fun accept(t: A) {}
 }
 
 
